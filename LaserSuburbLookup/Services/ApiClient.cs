@@ -51,7 +51,7 @@ namespace LaserSuburbLookup.Services
             }
             catch
             {
-                // Not JSON
+             
             }
 
             return content.Trim();
