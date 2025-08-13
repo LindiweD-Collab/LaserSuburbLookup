@@ -23,10 +23,11 @@ namespace LaserSuburbLookup.Services
         public async Task<string> GetTokenAsync(string username, string password)
         {
             var url = $"{_baseUrl}LaserToken?username={Uri.EscapeDataString(username)}&password={Uri.EscapeDataString(password)}";
+
             HttpResponseMessage resp;
             try
             {
-                resp = await _http.GetAsync(url).ConfigureAwait(false);
+                resp = await _http.GetAsync(url);
             }
             catch (Exception ex)
             {
@@ -35,42 +36,47 @@ namespace LaserSuburbLookup.Services
 
             if (!resp.IsSuccessStatusCode)
             {
-                var err = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var err = await resp.Content.ReadAsStringAsync();
                 throw new HttpRequestException($"Token endpoint returned {(int)resp.StatusCode}: {resp.ReasonPhrase}. {err}");
             }
 
-            var content = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var content = await resp.Content.ReadAsStringAsync();
+            return TryParseToken(content) ?? throw new Exception("Token could not be retrieved from the API.");
+        }
+
+        private string? TryParseToken(string content)
+        {
+            content = content.Trim().Trim('"');
 
             try
             {
                 using var doc = JsonDocument.Parse(content);
-                if (doc.RootElement.TryGetProperty("token", out var t1))
-                    return t1.GetString();
-                if (doc.RootElement.TryGetProperty("Token", out var t2))
+                if (doc.RootElement.TryGetProperty("AccessToken", out var t))
+                    return t.GetString();
+                if (doc.RootElement.TryGetProperty("token", out var t2))
                     return t2.GetString();
             }
             catch
             {
-             
+
             }
 
-            return content.Trim();
+            return string.IsNullOrWhiteSpace(content) ? null : content;
         }
 
         public async Task<List<Suburb>> GetSuburbsAsync(string token, string search)
         {
+            if (string.IsNullOrEmpty(token))
+                throw new ArgumentException("Token is required");
+
             var url = $"{_baseUrl}GetRestSuburb?suburb={Uri.EscapeDataString(search)}";
             var req = new HttpRequestMessage(HttpMethod.Get, url);
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             HttpResponseMessage resp;
             try
             {
-                resp = await _http.SendAsync(req).ConfigureAwait(false);
+                resp = await _http.SendAsync(req);
             }
             catch (Exception ex)
             {
@@ -79,17 +85,20 @@ namespace LaserSuburbLookup.Services
 
             if (!resp.IsSuccessStatusCode)
             {
-                var err = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var err = await resp.Content.ReadAsStringAsync();
                 throw new HttpRequestException($"Suburb endpoint returned {(int)resp.StatusCode}: {resp.ReasonPhrase}. {err}");
             }
 
-            var content = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var content = await resp.Content.ReadAsStringAsync();
             try
             {
-                var suburbs = JsonSerializer.Deserialize<List<Suburb>>(content, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var suburbs = JsonSerializer.Deserialize<List<Suburb>>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
                 return suburbs ?? new List<Suburb>();
             }
-            catch (Exception)
+            catch
             {
                 throw new Exception("Failed to parse suburb response.");
             }
@@ -105,3 +114,4 @@ namespace LaserSuburbLookup.Services
         }
     }
 }
+
