@@ -1,4 +1,4 @@
-# Suburb Finder WinForms Application
+# Suburb Looker WinForms Application
 
 This is a C# Windows Forms application built in .NET that demonstrates API integration and UI data display. The application fetches a list of suburbs from a specified API based on a user's search query, sorts the results alphabetically, and displays them in a grid.
 
