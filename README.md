@@ -45,7 +45,6 @@ All API-related settings are stored in the `appsettings.json` file. This file is
 #### 4. Save the file and restart the application for the changes to take effect.
 
 ## Assumptions Made
-Token Format: It is assumed the token authentication endpoint `(/LaserToken)` returns the token as plain text. The code trims any surrounding quotes (") from the response body.
 
 JSON Structure: The suburb data is expected to be a JSON array of objects, where each object contains a suburbName property (camelCase), as this is a common C#/.NET convention. The JsonPropertyName attribute is used to map this to the SuburbName C# property.
 
