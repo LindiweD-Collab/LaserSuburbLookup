@@ -1,4 +1,0 @@
-C:\Users\lindi\Downloads\LaserSuburbLookup\LaserSuburbLookup\obj\Release\net6.0-windows\win-x64\LaserSuburbLookup.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lindi\Downloads\LaserSuburbLookup\LaserSuburbLookup\obj\Release\net6.0-windows\win-x64\LaserSuburbLookup.AssemblyInfoInputs.cache
-C:\Users\lindi\Downloads\LaserSuburbLookup\LaserSuburbLookup\obj\Release\net6.0-windows\win-x64\LaserSuburbLookup.AssemblyInfo.cs
-C:\Users\lindi\Downloads\LaserSuburbLookup\LaserSuburbLookup\obj\Release\net6.0-windows\win-x64\LaserSuburbLookup.csproj.CoreCompileInputs.cache
