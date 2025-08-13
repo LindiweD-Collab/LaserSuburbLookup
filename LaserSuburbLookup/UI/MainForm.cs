@@ -22,15 +22,15 @@ namespace LaserSuburbLookup.UI
                 .AddJsonFile("appsettings.json", optional: true)
                 .Build();
 
-            // Load logo
+            // Logo
             var logo = _config["App:LogoPath"];
             if (!string.IsNullOrEmpty(logo) && System.IO.File.Exists(logo))
             {
                 try { pictureBoxLogo.Image = System.Drawing.Image.FromFile(logo); }
-                catch { /* ignore */ }
+                catch {  }
             }
 
-            // Create ApiClient with baseUrl from config
+            // ApiClient with baseUrl from config
             var baseUrl = _config["ApiSettings:BaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
