@@ -57,6 +57,10 @@ LaserSuburbLookup/
 ├── LaserSuburbLookup.sln
 ├── LaserSuburbLookup/
 │   ├── LaserSuburbLookup.csproj
+|   ├──Resources/
+|   |   └──laser-logistics.png
+|   ├──Models/
+|   |    └──Suburb.cs
 │   ├── UI/
 │   │   └── MainForm.cs
 │   ├── Services/
