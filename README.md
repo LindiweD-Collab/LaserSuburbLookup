@@ -59,8 +59,10 @@ LaserSuburbLookup/
 |   ├──Resources/
 |   |   └──laser-logistics.png
 |   ├──Models/
+|   |    ├──AuthResponse.cs
 |   |    └──Suburb.cs
 │   ├── UI/
+|   |   ├──MainForm.Designer.cs
 │   │   └── MainForm.cs
 │   ├── Services/
 │   │   └── ApiClient.cs
